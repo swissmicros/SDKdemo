@@ -38,3 +38,9 @@ The latest version of SDKdemo is available at
   https://github.com/swissmicros/SDKdemo
 
 
+
+== SDKdemo help file
+
+You can copy the help/sdkdemo.html file to directory /HELP/ on calculator filesystem.
+Then the help is available directly on calculator by pressing F1 key.
+
