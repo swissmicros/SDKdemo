@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Quick Reference Guide</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+		<style>
+			body{font-family: sans-serif;}
+			h1 {font-weight: bold; color: #000000;}
+			a {font-weight: bold; }
+			td {vertical-align: top;}
+			.button {background: #444444;color: #FFFFFF;font-family: monospace;padding: 1px;}
+			.lcd {background: #CCCCCC;font-family: VT323, monospace;font-size: 18px; }
+		</style>
+	</head>
+	<body>
+		<h1>SDK Demo Quick Reference Guide</h1>
+		<br>
+		Example help file
+		<br>
+		<h3>Navigation</h3>
+			Press <span class="button">+</span> to move one line forward<br>
+			Press <span class="button">-</span> to move one line backward<br>
+			Press <span class="button">&times;</span> to move one page forward<br>
+			Press <span class="button">&divide;</span> to move one page backward<br>
+		<br>
+
+
+		<h3>Symbols used in this guide</h3>
+		A <span class="lcd">123</span> represents a soft button or anything on the LCD<br>
+		A <span class="button">STO</span> represents a physical button<br>
+		<br>
+		<h2 id="Home">Contents</h2>
+		<ul>
+			<li><a href="#about_help">About Help Browser</a></li>
+			<li><a href="#Fx_buttons">Fx Buttons without menu</a></li>
+			<li><a href="#stack">Stack</a></li>
+			<li><a href="#regs">Registers</a></li>
+
+			<li><a href="#ang_modes">Angular Modes</a></li>
+			<li><a href="#num_fmts">Number Formats</a></li>
+			<li><a href="#impl_fns">Implemented Functions</a></li>
+		</ul>
+		<br><br>
+
+		<h2 id="about_help">About Help Browser</h2>
+		The DMCP system supports extremely lightweight implementation of HTML which covers just
+		small fraction of the format. Almost all supported formatting is used in this help file.
+		<br>
+		If you want to write your own help file it is strongly recommended to take this help file
+		as starting point and follow the structure of the HTML. Then check the appearance in
+		calculator browser, whether it looks as expected.<br>
+		<br>
+		See "<a href="#help_chars">Special characters available</a>" for list of supported
+		characters in help file.
+		<br><br>
+
+
+		<h2 id="stack">Stack</h2>
+		Stack consists of <b>10 registers</b>. All arithmetic operations use for arguments and results
+		top level of the stack as is usual for RPN machines.<br>
+		Stack registers could be also accessed using 
+		<span class="button">RCL</span> and <span class="button">STO</span>
+		with negative indexes -1 to -9.<br>
+		<br>
+		Example of stack display:<br>
+		<span class="lcd">6: 0                 </span><br>
+		<span class="lcd">5: 0                 </span><br>
+		<span class="lcd">4: 0                 </span><br>
+		<span class="lcd">3: 0                 </span><br>
+		<span class="lcd">2: 321232.123ᴇ-12    </span><br>
+		<span class="lcd">1: 54.344234342      </span><br>
+		<span class="lcd">0: 123.32            </span><br>
+		<br>
+
+		<h2 id="regs">Registers</h2>
+		Register area consist of <b>100 registers</b>. Registers could be accessed using 
+		<span class="button">RCL</span> and <span class="button">STO</span>
+		with indexes 0 to 99.<br>
+		<br>
+
+
+		<h2 id="Fx_buttons">Fx Buttons without menu</h2>
+		<table>
+			<tr><td>F1</td><td></td><td>Displays this Help</td></tr>
+			<tr><td>F2</td><td></td><td></td></tr>
+			<tr><td>F3</td><td></td><td></td></tr>
+			<tr><td>F4</td><td></td><td></td></tr>
+			<tr><td>F5</td><td></td><td>Decreases font size</td></tr>
+			<tr><td>F6</td><td></td><td>Increases font size</td></tr>
+		</table>
+		<br><br>
+
+
+		<h2 id="ang_modes">Angular Modes</h2>
+		Pressing <span class="button">MODES</span> button cycles through angular modes
+		<table>
+		<tr><td>DEG </td><td><i>Degrees</i></td></tr>
+		<tr><td>RAD</td><td><i>Radians</i></td></tr>
+		<tr><td>GRAD</td><td><i>Gradians</i></td></tr>
+		</table><br>
+		<br>
+		Current angular mode is displayed in status line.
+		<br><br>
+
+
+		<h2 id="num_fmts">Number Formats</h2>
+		Press <span class="button">DISP</span> - selection menu appears
+		<table>
+			<tr><td>None</td><td>No special format</td></tr>
+			<tr><td>FIX </td><td>Fixed decimal places (ARG)</td></tr>
+			<tr><td>SCI </td><td>Scientiﬁc notation (ARG)</td></tr>
+			<tr><td>ENG </td><td>Engineering notation (ARG)</td></tr>
+		</table><br>
+		(ARG): Takes number of fractional digits (i.e. digits after decimal point)
+		as argument from stack.
+		<br><br>
+
+
+		<h3 id="impl_fns">Implemented functions</h3>
+		[1/x],
+		[√x],
+		[LOG],
+		[LN],
+		<br>
+
+		[x<sup>2</sup>],
+		[y<sup>x</sup>],
+		[10<sup>x</sup>],
+		[e<sup>x</sup>],
+		<br>
+
+		[STO],
+		[RCL],
+		[R↓],
+		[SIN],
+		[COS],
+		[TAN],
+		<br>
+
+		[%],
+		[π],
+		[ASIN],
+		[ACOS],
+		[ATAN],
+		<br>
+
+		<br><br>
+
+
+		<h2 id="help_chars">Special characters available</h2>
+		This list of special characters supported in help files.<br>
+		<a href="#html_seq">HTML &amp;xxx; sequences</a><br>
+		<a href="#unichars">Unicode characters</a>
+		<ul>
+			<li><a href="#uc_letters">Letters</a></li>
+			<li><a href="#uc_letters">Letters</a></li>
+			<li><a href="#uc_ligatures">Ligatures</a></li>
+			<li><a href="#uc_greek">Greek</a></li>
+			<li><a href="#uc_punct">Punctuation marks</a></li>
+			<li><a href="#uc_arrows">Arrows</a></li>
+			<li><a href="#uc_symbols">Symbols</a></li>
+			<li><a href="#uc_graph">Graphics</a></li>
+		</ul>
+		<br>
+
+
+		<h3 id="html_seq">HTML &amp;xxx; sequences</h3>
+		<table>
+			<tr><td>' '</td><td></td><td>as &amp;nbsp;</td></tr>
+			<tr><td>&amp;</td><td></td><td>as &amp;amp;</td></tr>
+			<tr><td>&gt;</td><td></td><td>as &amp;gt;</td></tr>
+			<tr><td>&lt;</td><td></td><td>as &amp;lt;</td></tr>
+
+			<tr><td>&#9660;</td><td></td><td>as &amp;#9660;</td></tr>
+			<tr><td>&#9650;</td><td></td><td>as &amp;#9650;</td></tr>
+			<tr><td>&darr;</td><td></td><td>as &amp;darr;</td></tr>
+			<tr><td>&uarr;</td><td></td><td>as &amp;uarr;</td></tr>
+			<tr><td>&larr;</td><td></td><td>as &amp;larr;</td></tr>
+			<tr><td>&rarr;</td><td></td><td>as &amp;rarr;</td></tr>
+
+			<tr><td>&int;</td><td></td><td>as &amp;int;</td></tr>
+			<tr><td>&plusmn;</td><td></td><td>as &amp;plusmn;</td></tr>
+			<tr><td>&divide;</td><td></td><td>as &amp;divide;</td></tr>
+			<tr><td>&times;</td><td></td><td>as &amp;times;</td></tr>
+			<tr><td>&Sigma;</td><td></td><td>as &amp;Sigma;</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="unichars">Unicode characters</h3>
+		U+xxxx notation means Unicode character placed directly in help file.
+		<br><br>
+
+		<h3 id="uc_letters">Letters</h3>
+		<table>
+			<tr><td>Ä</td><td></td><td>U+00C4</td></tr>
+			<tr><td>Å</td><td></td><td>U+00C5</td></tr>
+			<tr><td>Æ</td><td></td><td>U+00C6</td></tr>
+			<tr><td>Ñ</td><td></td><td>U+00D1</td></tr>
+			<tr><td>Ö</td><td></td><td>U+00D6</td></tr>
+			<tr><td>Ü</td><td></td><td>U+00DC</td></tr>
+			<tr><td>ᴇ</td><td></td><td>U+1D07</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_ligatures">Ligatures</h3>
+		<table>
+			<tr><td>ﬁ</td><td></td><td>U+FB01</td></tr>
+			<tr><td>ﬂ</td><td></td><td>U+FB02</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_greek">Greek</h3>
+		<table>
+			<tr><td>Σ</td><td></td><td>U+03A3</td></tr>
+			<tr><td>μ</td><td></td><td>U+03BC</td></tr>
+			<tr><td>π</td><td></td><td>U+03C0</td></tr>
+			<tr><td>Γ</td><td></td><td>U+0393 (Transliterated)</td></tr>
+			<tr><td>θ</td><td></td><td>U+03B8 (Transliterated)</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_punct">Punctuation marks</h3>
+		<table>
+			<tr><td>—</td><td></td><td>U+2014</td></tr>
+			<tr><td>’</td><td></td><td>U+2019</td></tr>
+			<tr><td>…</td><td></td><td>U+2026</td></tr>
+			<tr><td>¿</td><td></td><td>U+00BF</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_arrows">Arrows</h3>
+		<table>
+			<tr><td>←</td><td></td><td>U+2190</td></tr>
+			<tr><td>↑</td><td></td><td>U+2191</td></tr>
+			<tr><td>→</td><td></td><td>U+2192</td></tr>
+			<tr><td>↓</td><td></td><td>U+2193</td></tr>
+			<tr><td>↲</td><td></td><td>U+21B2</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_symbols">Symbols</h3>
+		<table>
+			<tr><td>°</td><td></td><td>U+00B0</td></tr>
+			<tr><td>×</td><td></td><td>U+00D7</td></tr>
+			<tr><td>÷</td><td></td><td>U+00F7</td></tr>
+			<tr><td>√</td><td></td><td>U+221A</td></tr>
+			<tr><td>∡</td><td></td><td>U+2220 or U+2221</td></tr>
+			<tr><td>∫</td><td></td><td>U+222B</td></tr>
+			<tr><td>≠</td><td></td><td>U+2260</td></tr>
+			<tr><td>≤</td><td></td><td>U+2264</td></tr>
+			<tr><td>≥</td><td></td><td>U+2265</td></tr>
+			<tr><td>␊</td><td></td><td>U+240A</td></tr>
+			<tr><td>␛</td><td></td><td>U+241B</td></tr>
+			<tr><td>£</td><td></td><td>U+00A3</td></tr>
+		</table>
+		<br><br>
+
+		<h3 id="uc_graph">Graphics</h3>
+		<table>
+			<tr><td>▒</td><td></td><td>U+2592</td></tr>
+			<tr><td>■</td><td></td><td>U+25A0</td></tr>
+			<tr><td>▶</td><td></td><td>U+25B6</td></tr>
+			<tr><td>▼</td><td></td><td>U+25BC</td></tr>
+			<tr><td>▲</td><td></td><td>U+25B2</td></tr>
+			<tr><td>◄</td><td></td><td>U+25C4</td></tr>
+		</table>
+		<br><br>
+
+
+		<br><br>
+	</body>
+</html>
