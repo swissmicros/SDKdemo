@@ -1,4 +1,7 @@
 # SDKdemo
+
+## Note that this version of SDKdemo needs DMCP 3.8 to run
+
 ## The SDK and related material is released as “NOMAS”  (NOt MAnufacturer Supported). 
 
 1. Info is released to assist customers using, exploring and extending the product
