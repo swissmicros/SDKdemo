@@ -105,6 +105,10 @@ int run_menu_item(uint8_t line_id) {
       disp_about();
       break;
 
+    case MI_SETTINGS:
+      ret = handle_menu(&MID_SETTINGS,MENU_ADD, 0);
+      break;
+
      default:
       ret = MRET_UNIMPL;
       break;
