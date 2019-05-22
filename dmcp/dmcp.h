@@ -1,43 +1,43 @@
 /*
 
-  Copyright (c) 2018 SwissMicros GmbH
+BSD 3-Clause License
 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
+Copyright (c) 2015-2019, SwissMicros
+All rights reserved.
 
-  1. Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-  2. Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
-     the documentation and/or other materials provided with the
-     distribution.
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
 
-  3. Neither the name of the copyright holder nor the names of its
-     contributors may be used to endorse or promote products derived
-     from this software without specific prior written permission.
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
-  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-  OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-  POSSIBILITY OF SUCH DAMAGE.
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-  The SDK and related material is released as “NOMAS”  (NOt MAnufacturer Supported).
+  The software and related material is released as “NOMAS”  (NOt MAnufacturer Supported). 
 
   1. Info is released to assist customers using, exploring and extending the product
   2. Do NOT contact the manufacturer with questions, seeking support, etc. regarding
      NOMAS material as no support is implied or committed-to by the Manufacturer
-  3. The Manufacturer may reply and/or update materials if and when needed solely at
-     their discretion
+  3. The Manufacturer may reply and/or update materials if and when needed solely
+     at their discretion
 
 */
 #ifndef __SYS_DMCP_H__
@@ -123,6 +123,8 @@ void lcd_fillLines(int ln, uint8_t val, int cnt);
 void lcd_set_buf_cleared(int val);
 int lcd_get_buf_cleared();
 
+uint8_t reverse_byte(uint8_t x);
+
 
 // ----------------------------------
 
@@ -149,12 +151,12 @@ typedef struct {
 typedef struct {
   line_font_t const * f; // Current font
   int16_t x, y;      // Current x,y position
-  int16_t ln_offs;   // Line offeset (when displaying by line numbers)
-  int16_t y_top_grd; // Don'w overwrite anything above this line
+  int16_t ln_offs;   // Line offset (when displaying by line numbers)
+  int16_t y_top_grd; // Don't overwrite anything above this line
   int8_t  ya;     // Lines to fill above the font
   int8_t  yb;     // Lines to fill below the font
   int8_t  xspc;   // Space between chars
-  int8_t  xoffs;  // X offst for first char on line
+  int8_t  xoffs;  // X offset for first char on line
 
   uint8_t fixed;  // Draw in fixed width
   uint8_t inv;    // Draw inverted
@@ -176,19 +178,26 @@ int lcd_fontWidth(disp_stat_t * ds);
 
 // Font display functions
 void lcd_writeText(disp_stat_t * ds, const char* text);
+// Note that 'text' has to be in RAM
+void lcd_textToBox(disp_stat_t * ds, int x, int width, char *text, int from_right, int align_right);
 
 // Width calculation functions
 int lcd_textWidth(disp_stat_t * ds, const char* text);
 int lcd_charWidth(disp_stat_t * ds, int c);
 
 // Get just text which fits in expected_width
+// Returns index of char which breaks the space limit
+// Optional plen variable can be supplied to get text width up to index limit.
 int lcd_textToWidth(disp_stat_t * ds, const char* text, int expected_width, int * plen);
+// ... alternative version to upper function which takes text from the end
+// returns -1 if whole text fits into 'expected_width'
+int lcd_textToWidthR(disp_stat_t * ds, const char* text, int expected_width, int * plen);
 
-// Just advance ds->x don't print anythig
+// Just advance ds->x don't print anything
 void lcd_writeTextWidth(disp_stat_t * ds, const char* text);
 
-// Get text which fits in expected width without breaking words
-// - word could be broken in middle only when is placed single long word on line 
+// Get text which fits in expected width *without breaking words*
+// - word could be broken in the middle only when is placed single long word on line 
 int lcd_textForWidth(disp_stat_t * ds, const char* text, int expected_width, int * plen);
 
 
@@ -343,11 +352,11 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.8"
+#define PLATFORM_VERSION "3.13"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
-#define PLATFORM_IFC_VER   8
+#define PLATFORM_IFC_VER  10
 
 // STATIC_ASSERT ...
 #define ASSERT_CONCAT_(a, b) a##b
@@ -381,6 +390,7 @@ int get_vbat();
 // Freq in mHz
 void start_buzzer_freq(uint32_t freq);
 void stop_buzzer();
+void set_buzzer(int pin1val, int pin2val);
 
 void beep_volume_up();
 void beep_volume_down();
@@ -428,8 +438,7 @@ int usb_powered();
 
 char * aux_buf_ptr();
 void * write_buf_ptr();
-
-
+int write_buf_size();
 
 // Program info structure
 #define PROG_INFO_MAGIC 0xd377C0DE
@@ -448,6 +457,12 @@ typedef struct {
 	char pgm_ver[16];
 } __packed prog_info_t;
 
+
+// Keyboard
+int read_key(int *k1, int *k2);
+
+// Timer
+uint32_t get_tim1_timer();
 
 
 // ----------------------------------
@@ -540,6 +555,8 @@ extern const smenu_t   MID_BASE_SETUP; // System setup menu
 #define MI_PGM_LOAD        221
 
 #define MI_RUN_DMCP        222
+
+#define MI_OFF_MODE        223
 // --------------------------------
 
 
@@ -708,25 +725,6 @@ int file_selection_screen(const char * title, const char * base_dir, const char 
 #define STAT_HW                (STAT_HW_BEEP | STAT_HW_USB | STAT_HW_IR)
 
 
-// == File Item list
-
-#define pgm_fn_len 31
-
-typedef struct {
-  char fn[pgm_fn_len+1]; // Part of filename that fits on screen
-  char f8[16];           // 8.3 filename
-} file_item_t;
-
-// Enumerates files in directory
-// Parameter fis is filled with file names - fis could be NULL to just get the number of files
-// Returns >=0 number of the files in directory
-//          <0 fail
-int read_file_items(const char * dir_name, const char * filt, file_item_t * fis);
-
-void sort_file_items(file_item_t *fis, int fcnt);
-
-
-
 // Screenshots
 #define SCR_DIR        "/SCREENS"
 
@@ -793,6 +791,9 @@ void set_fat_label(const char * label);
 
 int file_exists(const char * fn);
 
+// Returns -1 if file doesn't exist
+int file_size(const char * fn);
+
 int sys_disk_ok();
 int sys_disk_write_enable(int val);
 void sys_disk_check_valid();
@@ -831,6 +832,9 @@ void sys_reset();
 // Key
 int sys_last_key();
 
+// Aux file
+void make_date_filename(char * str, const char * dir, const char * ext);
+
 
 // ----------------------------------
 
@@ -839,9 +843,16 @@ void run_help_file(const char * help_file);
 
 // ----------------------------------
 
+
 // Off images
 void draw_power_off_image(int allow_errors);
 void reset_off_image_cycle();
+
+#define BG_COL_PAPER  0xf4f2dc
+#define BG_COL_LCD    0xdff5cc
+
+int update_bmp_file_header(FIL* fp, int width, int height, uint32_t bg_color);
+
 
 // ----------------------------------
 
