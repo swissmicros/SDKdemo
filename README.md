@@ -1,16 +1,13 @@
 # SDKdemo
 
-## Note that this version of SDKdemo requires DMCP 3.8 or higher to run
 
-## The SDK and related material is released as “NOMAS”  (NOt MAnufacturer Supported). 
+## News
 
-1. Info is released to assist customers using, exploring and extending the product
+There is new DMCP interface doc in progress see [DMCP IFC doc](http://www.swissmicros.com/dm42/doc/DMCP-ifc-html/).
 
-1. Do NOT contact the manufacturer with questions, seeking support, etc. regarding NOMAS material as no support is implied or committed-to by the Manufacturer
+## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 
-1. The Manufacturer may reply and/or update materials if and when needed solely at their discretion
-
-### This repo contains the sources for SDK demo project - simple scientific RPN calculator
+- *Note that this version of SDKdemo requires DMCP 3.8 or higher to run*
 
 README file contains basic instructions how to prepare building environment and build the program.
 
@@ -25,3 +22,11 @@ to LCD or printing to IR printer) look at sources of the DM42PGM project.
 
 At this time the only source of information about the use of DMCP system interface is based on
 the source code of DMCP programs.
+
+## The SDK and related material is released as “NOMAS”  (NOt MAnufacturer Supported).
+
+1. Info is released to assist customers using, exploring and extending the product
+
+1. Do NOT contact the manufacturer with questions, seeking support, etc. regarding NOMAS material as no support is implied or committed-to by the Manufacturer
+
+1. The Manufacturer may reply and/or update materials if and when needed solely at their discretion
