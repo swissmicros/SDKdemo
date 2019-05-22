@@ -1,13 +1,10 @@
 # SDKdemo
 
 
-## News
-
-There is new DMCP interface doc in progress see [DMCP IFC doc](http://www.swissmicros.com/dm42/doc/DMCP-ifc-html/).
-
 ## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 
-- *Note that this version of SDKdemo requires DMCP 3.8 or higher to run*
+- There is DMCP interface doc in progress see [DMCP IFC doc](http://www.swissmicros.com/dm42/doc/DMCP-ifc-html/).
+
 
 README file contains basic instructions how to prepare building environment and build the program.
 
