@@ -3,7 +3,8 @@
 
 ## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 
-- There is DMCP interface doc in progress see [DMCP IFC doc](http://www.swissmicros.com/dm42/doc/DMCP-ifc-html/).
+- There is DMCP interface doc in progress see [DMCP IFC doc](http://www.swissmicros.com/dm42/doc/DMCP-ifc-html/) (or
+you can download html zip from [doc directory](http://www.swissmicros.com/dm42/doc/)).
 
 
 README file contains basic instructions how to prepare building environment and build the program.
