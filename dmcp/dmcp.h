@@ -77,14 +77,6 @@ typedef unsigned int uint;
 
 
 
-#define BLT_OR    0
-#define BLT_ANDN  1
-#define BLT_XOR   2 // 3
-
-#define BLT_NONE  0
-#define BLT_SET   1
-
-
 // HW interface
 void LCD_clear();
 void LCD_power_on();
@@ -92,7 +84,7 @@ void LCD_power_off(int clear);
 void LCD_write_line(uint8_t * buf);
 
 
-void bitblt24(uint32_t x, uint32_t dx, uint32_t y, uint32_t val, int invert, int fill);
+void bitblt24(uint32_t x, uint32_t dx, uint32_t y, uint32_t val, int blt_op, int fill);
 
 // Returns pointer to line buffer (doesn't depend on LCD_INVERT_XAXIS)
 uint8_t * lcd_line_addr(int y);
@@ -100,6 +92,8 @@ uint8_t * lcd_line_addr(int y);
 // Drawing Prototypes
 void lcd_clear_buf();
 void lcd_refresh();
+void lcd_refresh_dma();
+void lcd_refresh_wait();
 void lcd_forced_refresh();
 void lcd_refresh_lines(int ln, int cnt);
 
@@ -113,8 +107,8 @@ void lcd_draw_img_part(const char* img, uint32_t xo, uint32_t yo, uint32_t x, ui
 
 #define LCD_X 400
 #define LCD_Y 240
-#define LCD_LINE_SIZE      50
-#define LCD_LINE_BUF_SIZE  LCD_LINE_SIZE+4
+#define LCD_LINE_SIZE      50                  // LCD_X/8
+#define LCD_LINE_BUF_SIZE  (2+LCD_LINE_SIZE+2) // CMD, Line_nr, line data (50 bytes), dummy (2 bytes)
 
 void lcd_fillLine(int ln, uint8_t val);
 void lcd_fillLines(int ln, uint8_t val, int cnt);
@@ -311,7 +305,7 @@ typedef struct {
 
   void_fn_t * after_fat_format;
 
-  get_flag_fn_t * is_flag_dmy;
+  get_flag_fn_t * get_flag_dmy;
   set_flag_fn_t * set_flag_dmy;
   get_flag_fn_t * is_flag_clk24;
   set_flag_fn_t * set_flag_clk24;
@@ -321,6 +315,9 @@ typedef struct {
   disp_stat_t * pds_t20;
   disp_stat_t * pds_t24;
   disp_stat_t * pds_fReg;
+
+  uint32_t * timer2_counter;
+  uint32_t * timer3_counter;
 
 } sys_sdb_t;
 
@@ -335,12 +332,14 @@ typedef struct {
 
 #define after_fat_format  (sdb.after_fat_format)
 
-#define is_flag_dmy     (sdb.is_flag_dmy)
+#define get_flag_dmy    (sdb.get_flag_dmy)
 #define set_flag_dmy    (sdb.set_flag_dmy)
 #define is_flag_clk24   (sdb.is_flag_clk24)
 #define set_flag_clk24  (sdb.set_flag_clk24)
 #define is_beep_mute    (sdb.is_beep_mute)
 #define set_beep_mute   (sdb.set_beep_mute)
+#define timer2_counter  (sdb.timer2_counter)
+#define timer3_counter  (sdb.timer3_counter)
 
 
 #define t20             (sdb.pds_t20)
@@ -352,11 +351,11 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.13"
+#define PLATFORM_VERSION "3.14"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
-#define PLATFORM_IFC_VER  10
+#define PLATFORM_IFC_VER  12
 
 // STATIC_ASSERT ...
 #define ASSERT_CONCAT_(a, b) a##b
@@ -398,14 +397,6 @@ int get_beep_volume();
 
 
 // ==== REGIONS
-#define MARK_42_KEYP            0xd3770101
-#define MARK_42_KEYR            0xd3770102
-#define MARK_42_KEY0            0xd3770103
-#define MARK_42_PGM_LOAD        0xd3770104
-#define MARK_42_PGM_SAVE        0xd3770105
-#define MARK_42_STAT_LOAD       0xd3770106
-#define MARK_42_STAT_SAVE       0xd3770107
-
 uint32_t mark_region(uint32_t id);
 void no_region();
 
@@ -433,9 +424,6 @@ int usb_powered();
 // Aux buf
 #define AUX_BUF_SIZE (5*512)
 
-#define AUX_BUF_PGM_LIST_SIZE (3*512)
-#define AUX_BUF_SELS_SIZE       (512)
-
 char * aux_buf_ptr();
 void * write_buf_ptr();
 int write_buf_size();
@@ -446,23 +434,33 @@ int write_buf_size();
 void program_main();
 
 typedef struct {
-	uint32_t pgm_magic;
-	uint32_t pgm_size;
-	void * pgm_entry;
-	uint32_t ifc_cnr;
-	uint32_t ifc_ver;
-	uint32_t qspi_size;
-	uint32_t qspi_crc;
-	char pgm_name[16];
-	char pgm_ver[16];
+  uint32_t pgm_magic;
+  uint32_t pgm_size;
+  void * pgm_entry;
+  uint32_t ifc_cnr;
+  uint32_t ifc_ver;
+  uint32_t qspi_size;
+  uint32_t qspi_crc;
+  char pgm_name[16];
+  char pgm_ver[16];
+  uint32_t required_keymap_id;
 } __packed prog_info_t;
 
 
 // Keyboard
 int read_key(int *k1, int *k2);
+void suspended_bg_key_read();
+void resume_bg_key_read();
 
 // Timer
 uint32_t get_tim1_timer();
+
+// Base frequency 8MHz
+#define TIMER_BASE_FREQ  (8000000)
+void start_timer2(uint32_t div32);
+void start_timer3(uint16_t div16);
+void stop_timer2();
+void stop_timer3();
 
 
 // ----------------------------------
@@ -498,7 +496,7 @@ typedef void void_fn_t();
 typedef struct {
   const char  * name;
   const uint8_t * items;
-  const char  ** msg;
+  const char* const * msg;
   void_fn_t * post_disp;
 } smenu_t;
 
@@ -510,6 +508,7 @@ extern const smenu_t    MID_PROD_DIAG; // Production diagnostic screen
 extern const smenu_t   MID_PROD_DIAG2; // Production diagnostic screen - selftest version in main menu
 extern const smenu_t         MID_DMCP; // Top level system menu
 extern const smenu_t   MID_BASE_SETUP; // System setup menu
+extern const smenu_t     MID_BAD_KMAP; // Bad keymap menu
 
 
 // --------------------------------
@@ -557,6 +556,10 @@ extern const smenu_t   MID_BASE_SETUP; // System setup menu
 #define MI_RUN_DMCP        222
 
 #define MI_OFF_MODE        223
+
+#define MI_KMAP_PGM_RUN    224
+#define MI_KMAP_DMCP       225
+
 // --------------------------------
 
 
@@ -611,6 +614,66 @@ typedef int (*file_sel_fn_t)(const char * fpath, const char * fname, void * data
 
 int file_selection_screen(const char * title, const char * base_dir, const char * ext, file_sel_fn_t sel_fn,
                           int disp_new, int overwrite_check, void * data);
+
+
+
+
+// ---------------------------------------------------
+//  Item selection screen
+// ---------------------------------------------------
+
+#define ISEL_FILL_ITEMS    -100
+#define ISEL_KEY_PRESSED   -101
+#define ISEL_EXIT          -102
+
+#define ISEL_POST_DRAW       -2
+#define ISEL_PRE_DRAW        -1
+
+typedef uint16_t list_item_t;
+
+struct item_sel_state;
+typedef void isel_disp_line_fn_t(int lnr, list_item_t *fis, int cur_fnr, struct item_sel_state *st);
+typedef void fis_name_fn_t(struct item_sel_state *st, list_item_t fis, char * nmbuf, int len);
+
+
+typedef struct item_sel_state {
+  int8_t fnr;
+  int8_t top_nr;
+  int8_t lncnt;      // Number of LCD lines available
+  int8_t roll_lines;
+  int8_t key;
+
+  list_item_t * fis;
+  fis_name_fn_t * fis_name_fn; // Used for sorting
+  int max_items;
+  int fcnt;
+
+  // -- Set by user --
+  const char * title;  // Screen title
+  char * title2;       // Optional right part of title
+  isel_disp_line_fn_t * disp_line_fn; // Line draw function
+  char * lnbuf;       // line buffer if app wants to use it for line drawing
+  int lnsize;         // lnbuf size
+
+  void * data;        // Custom data (useful for line draw callback)
+  void * items;       // Custom data for items
+
+} __packed item_sel_state_t;
+
+
+// Initialize item sel structure
+void item_sel_init(item_sel_state_t *st);
+void item_sel_reinit(item_sel_state_t *st);
+
+// upd == 1 -> force repaint
+int item_sel_engine(item_sel_state_t *st, int upd);
+
+// Display header
+void item_sel_header(item_sel_state_t *st, int update);
+
+// ---------------------------------------------------
+
+void msg_box(disp_stat_t * ds, char * txt, int inv);
 
 
 // ----------------------------------
@@ -680,6 +743,9 @@ int file_selection_screen(const char * title, const char * base_dir, const char 
 #define KEY_PAGEUP     KEY_DIV
 #define KEY_PAGEDOWN   KEY_MUL
 
+
+#define IS_EXIT_KEY(k)  ( (k) == KEY_EXIT || (k) == KEY_BSP )
+
 // -----------------------
 //  Bit masks operations
 // -----------------------
@@ -716,6 +782,7 @@ int file_selection_screen(const char * title, const char * base_dir, const char 
 #define STAT_DMY               BIT(13)
 #define STAT_CLK24             BIT(14)
 #define STAT_POWER_CHANGE      BIT(15)
+#define STAT_YMD               BIT(16)
 
 
 #define STAT_HW_BEEP           BIT(28)
@@ -834,6 +901,27 @@ int sys_last_key();
 
 // Aux file
 void make_date_filename(char * str, const char * dir, const char * ext);
+
+
+// ---------------------------
+// Flashing
+// ---------------------------
+
+// Enable flashing
+void sys_flashing_init();
+// Disable flashing
+void sys_flashing_finish();
+
+// Expects address and size aligned with flash block size
+// Returns 0 on success
+int sys_flash_erase_block(void* start_addr, uint32_t size);
+
+// Expects destination address and size are multiples of 8
+// Returns 0 on success
+int sys_flash_write_block(void* dst_addr, uint8_t * src_buf, uint32_t size);
+
+// ---------------------------
+
 
 
 // ----------------------------------
