@@ -2,7 +2,7 @@
 
 BSD 3-Clause License
 
-Copyright (c) 2015-2019, SwissMicros
+Copyright (c) 2015-2020, SwissMicros
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -781,10 +781,6 @@ void handle_key(int key) {
 
 
 void clear_regs() {
-  // Set stack to zeroes
-  for(int a=0; a<STACK_SIZE; a++)
-    stack[a] = num_zero;
-
   // Set regs to zeroes
   for(int a=0; a<REGS_SIZE; a++)
     regs[a] = num_zero;
