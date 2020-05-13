@@ -99,6 +99,7 @@ void lcd_refresh_lines(int ln, int cnt);
 
 
 void lcd_fill_rect(uint32_t x, uint32_t y, uint32_t dx, uint32_t dy, int val);
+void lcd_fill_ptrn(int x, int y, int dx, int dy, int ptrn1, int ptrn2);
 
 // Place image into LCD buffer
 void lcd_draw_img(const char* img, uint32_t xo, uint32_t yo, uint32_t x, uint32_t y);
@@ -351,11 +352,11 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.18"
+#define PLATFORM_VERSION "3.19"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
-#define PLATFORM_IFC_VER  13
+#define PLATFORM_IFC_VER  14
 
 // STATIC_ASSERT ...
 #define ASSERT_CONCAT_(a, b) a##b
@@ -708,6 +709,9 @@ void item_sel_header(item_sel_state_t *st, int update);
 // ---------------------------------------------------
 
 void msg_box(disp_stat_t * ds, const char * txt, int inv);
+
+
+int run_menu_item_sys(uint8_t line_id);
 
 
 // ----------------------------------

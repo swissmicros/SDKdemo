@@ -225,3 +225,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define run_help_file_style (*(typeof(run_help_file_style)*)(LIBRARY_FN_BASE+716))
 #define print_buffer (*(typeof(print_buffer)*)(LIBRARY_FN_BASE+720))
 #define print_is_ready (*(typeof(print_is_ready)*)(LIBRARY_FN_BASE+724))
+#define run_menu_item_sys (*(typeof(run_menu_item_sys)*)(LIBRARY_FN_BASE+728))
+#define lcd_fill_ptrn (*(typeof(lcd_fill_ptrn)*)(LIBRARY_FN_BASE+732))
