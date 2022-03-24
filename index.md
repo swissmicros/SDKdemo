@@ -4,6 +4,7 @@ layout: docu
 
 # SDKdemo
 
+[https://github.com/swissmicros/SDKdemo](https://github.com/swissmicros/SDKdemo))
 
 ## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 

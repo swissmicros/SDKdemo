@@ -39,7 +39,7 @@ Contents of QSPI
 ## SDKdemo repository
 
 The latest version of SDKdemo is available at
-  [{{ site.title }}/SDKdemo](https://github.com/swissmicros/SDKdemo))
+  [https://github.com/swissmicros/SDKdemo](https://github.com/swissmicros/SDKdemo))
 
 
 
