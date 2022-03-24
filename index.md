@@ -6,6 +6,8 @@ layout: docu
 
 [https://github.com/swissmicros/SDKdemo](https://github.com/swissmicros/SDKdemo)
 
+[https://github.com/swissmicros/SDKdemo/readme_build.html](https://github.com/swissmicros/SDKdemo/readme_build.html)
+
 ## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 
 - There is DMCP interface doc in progress see [DMCP IFC doc](http://technical.swissmicros.com/dmcp/doc/DMCP-ifc-html/) 
