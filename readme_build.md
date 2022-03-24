@@ -1,5 +1,8 @@
+---
+layout: docu
+---
 
-== Prerequisites
+## Prerequisites
 
 GNU ARM toolchain can be downloaded from
   https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads.
@@ -17,11 +20,12 @@ Some usually available aux utilities (could require separate installation):
 
 
 
-== Build
+## Build
 
 Add ARM toolchain bin/ directory to PATH.
+```
 (e.g. ~/arm/gcc-arm-none-eabi-7-2018-q2-update/bin)
-
+```
 Run make to build the program.
 
 Generated program 
@@ -32,14 +36,15 @@ Contents of QSPI
 
 
 
-== SDKdemo repository
+## SDKdemo repository
 
 The latest version of SDKdemo is available at
-  https://github.com/swissmicros/SDKdemo
+  [{{ site.title }}/SDKdemo](https://github.com/swissmicros/SDKdemo))
 
 
 
-== SDKdemo help file
+
+## SDKdemo help file
 
 You can copy the help/sdkdemo.html file to directory /HELP/ on calculator filesystem.
 Then the help is available directly on calculator by pressing F1 key.
