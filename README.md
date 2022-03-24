@@ -1,34 +1,46 @@
----
-layout: docu
----
 
-# SDKdemo
+== Prerequisites
+
+GNU ARM toolchain can be downloaded from
+  https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads.
+We are currently using Version 7-2018-q2-update Linux 64-bit.
+
+Make is usually available in some base development package, but you
+can install it directly, e.g. for debian like systems
+  sudo apt-get install make
+
+Basic shell utilities (usually present in system):
+  bash, dd, sed, tac, printf, find, etc.
+
+Some usually available aux utilities (could require separate installation):
+  crc32, sha1sum
 
 
-## This repo contains the sources for SDK demo project - simple scientific RPN calculator
 
-- There is DMCP interface doc in progress see [DMCP IFC doc](http://technical.swissmicros.com/dmcp/doc/DMCP-ifc-html/) (or
-you can download html zip from [doc directory](http://technical.swissmicros.com/dmcp/doc/)).
+== Build
+
+Add ARM toolchain bin/ directory to PATH.
+(e.g. ~/arm/gcc-arm-none-eabi-7-2018-q2-update/bin)
+
+Run make to build the program.
+
+Generated program 
+  build/SDKdemo.pgm
+
+Contents of QSPI
+  build/SDKdemo_qspi.bin
 
 
-README file contains basic instructions how to prepare building environment and build the program.
 
-For the basic SDK with simple 'Hello World!' program look at DMCP_SDK repository.
+== SDKdemo repository
 
-You can look at this SDKdemo project for more advanced project with
-keyboard handling, more sophisticated LCD printing, power management, build with Intel® Decimal
-Floating-Point Math Library, user defined menus and more.
+The latest version of SDKdemo is available at
+  https://github.com/swissmicros/SDKdemo
 
-For ultimate project which uses other aspect of the DMCP system (like system timers, bitmap printing
-to LCD or printing to IR printer) look at sources of the DM42PGM project.
 
-At this time the only source of information about the use of DMCP system interface is based on
-the source code of DMCP programs.
 
-## The SDK and related material is released as “NOMAS”  (NOt MAnufacturer Supported).
+== SDKdemo help file
 
-1. Info is released to assist customers using, exploring and extending the product
+You can copy the help/sdkdemo.html file to directory /HELP/ on calculator filesystem.
+Then the help is available directly on calculator by pressing F1 key.
 
-1. Do NOT contact the manufacturer with questions, seeking support, etc. regarding NOMAS material as no support is implied or committed-to by the Manufacturer
-
-1. The Manufacturer may reply and/or update materials if and when needed solely at their discretion
