@@ -1,3 +1,6 @@
+---
+layout: docu
+---
 # SDKdemo
 
 
