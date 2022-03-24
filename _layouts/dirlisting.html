@@ -47,7 +47,7 @@ layout: docu
     {% endif %}
   {% endfor %}
 {% endcapture %}
-{% assign folders = folders_list | split: '::'| uniq | sort %}  
+{% assign folders = folders_list | strip_newlines | replace: ' ', '' | split: '::'| uniq | sort %}  
 <!-- folders = {{ folders | array_to_sentence_string }} <br/> -->
 
 {% capture top_folder_list %}
@@ -58,7 +58,7 @@ layout: docu
   {% endfor %}
 {% endcapture %}
 {% assign top_folders = top_folder_list | strip_newlines | replace: ' ', '' | split: '::' | uniq | compact | sort %}  
-<!-- top_folders = {{ folders | array_to_sentence_string }} <br/> -->
+<!-- top_folders = {{ top_folders | array_to_sentence_string }} <br/> -->
 
 <table class="indexlist">
   <tbody>
@@ -68,9 +68,7 @@ layout: docu
   {% endif %}
 
 {% for folder in top_folders %}
-  {% if folder != '' %}
-     <tr><td><a href="{{ folder }}"><i class="fa-solid fa-folder"></i></a></td><td><a href="{{ folder }}">{{ folder }}</a></td><td><a href="{{ folder }}"></a></td></tr>
-  {% endif %}
+   <tr><td><a href="{{ folder }}"><i class="fa-solid fa-folder"></i></a></td><td><a href="{{ folder }}">{{ folder }}</a></td><td><a href="{{ folder }}"></a></td></tr>
 {% endfor %}
 
 {% for file in site.static_files %}
