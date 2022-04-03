@@ -1,0 +1,10 @@
+name: component-a
+title: Component A
+version: 1.5.6
+start_page: ROOT:inline-text-formatting.adoc
+asciidoc:
+  attributes:
+    source-language: asciidoc@
+    table-caption: false
+nav:
+- modules/ROOT/nav.adoc
