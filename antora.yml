@@ -1,10 +1,9 @@
 name: SDKdemo
 title: SDK Demo
 version: master
-start_page: index.md
 asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
 nav:
-- index.md
+- modules/contribute/nav.adoc
