@@ -1,6 +1,6 @@
 name: SDKdemo
 title: SDK Demo
-version: *
+version: 1.5.7
 start_page: index.md
 asciidoc:
   attributes:
