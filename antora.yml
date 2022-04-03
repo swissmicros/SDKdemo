@@ -7,4 +7,4 @@ asciidoc:
     source-language: asciidoc@
     table-caption: false
 nav:
-- index.dm
+- index.md
