@@ -1,0 +1,35 @@
+= Ordered Lists
+
+== Ordered list
+
+.Ordered list with title
+----
+.Optional title of list
+. Step 1
+. Step 2
+. Step 3
+----
+
+.Optional title of list
+. Step 1
+. Step 2
+. Step 3
+
+== Nested ordered list
+
+.Ordered list with nested levels
+----
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+... Sub-step 2b
+. Step 3
+----
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+... Sub-step 2b
+. Step 3
