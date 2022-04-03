@@ -1,0 +1,65 @@
+= Admonition
+
+== Admonition styles
+
+An admonition, also known as a notice, helps draw attention to a line or block of text with a special label or icon.
+
+Asciidoctor comes with five built-in styles.
+
+* NOTE
+* TIP
+* IMPORTANT
+* CAUTION
+* WARNING
+
+== Basic admonition
+
+.Basic admonitions
+----
+CAUTION: Don't stick forks in electric sockets.
+
+TIP: After someone sticks a fork in a socket, you'll need to reset the circuit in the breaker box in the dark and scary basement.
+
+WARNING: Never go into the basement.
+
+IMPORTANT: A monster lives in the basement.
+
+NOTE: If you go into the basement, see if you can find Kenny's orange parka.
+----
+
+CAUTION: Don't stick forks in electric sockets.
+
+TIP: After someone sticks a fork in a socket, you'll need to reset the circuit in the breaker box in the dark and scary basement.
+
+WARNING: Never go into the basement.
+
+IMPORTANT: A monster lives in the basement.
+
+NOTE: If you go into the basement, see if you can find Kenny's orange parka.
+
+== Complex admonition
+
+.Example block masquerading as an admonition
+----
+[IMPORTANT]
+.Optional title
+====
+Use an example block to create an admonition that contains complex content, such as (but not limited to):
+
+* Lists
+* Multiple paragraphs
+* Source code
+* Images
+====
+----
+
+[IMPORTANT]
+.Optional title
+====
+Use an example block to create an admonition that contains complex content, such as (but not limited to):
+
+* Lists
+* Multiple paragraphs
+* Source code
+* Images
+====

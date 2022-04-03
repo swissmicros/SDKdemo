@@ -1,0 +1,101 @@
+= Special Characters and Symbols
+:table-caption!:
+
+Special character and symbol replacement is built into Asciidoctor.
+
+During conversion, the characters in the table below are replaced with the appropriate character or Unicode entity.
+Replacement of special characters and symbols occurs in all inline and block elements except for comments and certain passthroughs.
+The three special characters, `<`, `>`, and `&`, are always replaced first.
+
+HTML and XML character entities as well as decimal and hexadecimal Unicode code point references are also recognized and replaced.
+
+For example, to produce the `&sect;` symbol you can use `\&sect;`, `\&#x00A7;`, or `\&#167;`.
+When the document is processed, the replacements substitution will replace the section symbol reference, regardless of whether it is a character entity reference or a numeric character reference, with `\&#167;`.
+In turn, `\&#167;` will display as `&sect;`.
+
+== Special character and symbol syntax
+
+[cols="2,^1l,^1,^1,2"]
+|===
+|Name |Syntax |Replacement |Rendered |Notes
+
+|Ampersand
+|&
+|\&amp;
+|&
+|
+
+|Apostrophe, curved
+|Sam's
+|Sam\&#8217;s
+|Sam's
+|The vertical form apostrophe is replaced with the curved form apostrophe.
+
+|Copyright
+|(C)
+|\&#169;
+|(C)
+|
+
+|Ellipses
+|...
+|\&#8230;
+|...
+|
+
+|Em dash
+|--
+|\&#8212;
+|{empty}--{empty}
+|Only replaced if between two word characters, between a word character and a line boundary, or flanked by spaces.
+
+When flanked by space characters (e.g., `+a -- b+`), the normal spaces are replaced by thin spaces (\&#8201;).
+
+|Greater than
+|>
+|\&gt;
+|>
+|
+
+|Left double arrow
+|<=
+|\&#8656;
+|<=
+|
+
+|Left single arrow
+|<-
+|\&#8592;
+|<-
+|
+
+|Less than
+|<
+|\&lt;
+|
+|
+
+|Registered
+|(R)
+|\&#174;
+|(R)
+|
+
+|Right double arrow
+|=>
+|\&#8658;
+|=>
+|
+
+|Right single arrow
+|->
+|\&#8594;
+|->
+|
+
+|Trademark
+|(TM)
+|\&#8482;
+|(TM)
+|
+|===
