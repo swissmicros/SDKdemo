@@ -31,7 +31,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-  The software and related material is released as “NOMAS”  (NOt MAnufacturer Supported). 
+  The software and related material is released as “NOMAS”  (NOt MAnufacturer Supported).
 
   1. Info is released to assist customers using, exploring and extending the product
   2. Do NOT contact the manufacturer with questions, seeking support, etc. regarding
@@ -81,7 +81,7 @@ void clear_regs();
 
 
 // ==================================================
-// == Util functions 
+// == Util functions
 // ==================================================
 
 
@@ -93,7 +93,7 @@ void beep(int freq, int dur) {
 
 
 void make_screenshot() {
-  // Start click 
+  // Start click
   start_buzzer_freq(4400); sys_delay(10); stop_buzzer();
   // Make screenshot - allow to report errors
   if ( create_screenshot(1) == 2 ) {
@@ -176,10 +176,10 @@ const int fm_disp_fns[] = {FM_DISP_NONE, FM_DISP_FIX, FM_DISP_SCI, FM_DISP_ENG,0
 // Returns 1/0 whether it was/wasn't overflow (resp.)
 // ix - index of first rounded digit
 int round_string(char * s, int ix, char rounding_digit) {
-  
+
   if (rounding_digit + 5 <= '9')
     return 0;
-  
+
   for( ; ix >=0; ix--) {
     if (s[ix] == '.')
       continue; // Skip decimal point
@@ -216,7 +216,7 @@ void num_format(num_t * num, char *str, int len, int mode, int mode_digits) {
     // Terminate mantissa string
     char * mend = ep-1;    // Mantissa end
     char * mant = s+1;     // Mantissa string
-    // Ignore mantissa trailing zeros 
+    // Ignore mantissa trailing zeros
     while (ep > mant && mend[0] == '0') mend--;
     *(++mend) = 0;
 
@@ -229,7 +229,7 @@ void num_format(num_t * num, char *str, int len, int mode, int mode_digits) {
         b = exp;
         if (exp >= (-MAX_NEG_FILL+1)) {
           if (exp <= 0)   // Number requires '0.' and zero padding after decimal point
-            b+= 2-exp+1;  // to at least one mantissa digit after padding zeros 
+            b+= 2-exp+1;  // to at least one mantissa digit after padding zeros
           if (ms) b++;  // One place for sign
           isexp = b > len; // Number cannot fit without exponent
         }
@@ -337,7 +337,7 @@ void disp_annun(int xpos, const char * txt) {
 
 
 const char *ang_mode_ann[ANG_MODE_CNT] = {"[DEG]", "[RAD]", "[GRAD]"};
-  
+
 void redraw_lcd() {
   char s[MAX_LINE_SIZE];
   const int top_y_lines = lcd_lineHeight(t20);
@@ -474,7 +474,7 @@ void add_edit_key(int key) {
 
     case KEY_BSP:
       ed[--len] = 0;
-      if (len == 0) 
+      if (len == 0)
         cancel_edit(); // Leaving edit when removed last edited char
       break;
 
@@ -559,7 +559,7 @@ int run_fn(int key) {
     case KEY_STO:           reg_by_ix(stack)[0] = stack[1]; stack_pop(); break;
     case KEY_RCL:           stack[0] = reg_by_ix(stack)[0]; break;
     case KEY_RCL   | FNSH:  num_mul(&res, stack+1, stack); stack_pop(); num_mul(stack,&res,&num_1_100); break;
-    
+
     case KEY_ADD:           num_add(&res, stack+1, stack); RES2; break;
     case KEY_SUB:           num_sub(&res, stack+1, stack); RES2; break;
     case KEY_MUL:           num_mul(&res, stack+1, stack); RES2; break;
@@ -574,7 +574,7 @@ int run_fn(int key) {
     case KEY_SQRT | FNSH:   num_mul(&res, stack, stack); RES1; break;
     case KEY_LOG  | FNSH:   num_exp10(&res, stack); RES1; break;
     case KEY_LN   | FNSH:   num_exp(&res,stack); RES1; break;
-    
+
     case KEY_SIN:           num_sin(stack, TO_RAD(&res, stack)); break;
     case KEY_COS:           num_cos(stack, TO_RAD(&res, stack)); break;
     case KEY_TAN:           num_tan(stack, TO_RAD(&res, stack)); break;
@@ -618,7 +618,7 @@ int run_fn(int key) {
 
 void handle_fmenu(int key) {
   if (!f_menu) return;
-  
+
   if (f_menu_fns) {
     int ix = key-KEY_F1;
     int fm_key = f_menu_fns[ix];
@@ -692,7 +692,7 @@ void handle_key(int key) {
     switch(key) {
       case KEY_0:
         SET_ST(STAT_MENU);
-        //int ret = 
+        //int ret =
         handle_menu(&MID_MENU, MENU_RESET, 0); // App menu
         CLR_ST(STAT_MENU);
         wait_for_key_release(-1);
@@ -701,7 +701,7 @@ void handle_key(int key) {
       case KEY_ENTER:
         if (edit)
           cancel_edit();
-        stack_pop(); 
+        stack_pop();
         break;
 
       case KEY_CHS: // MODES
@@ -746,7 +746,7 @@ void handle_key(int key) {
         if (edit)
           finish_edit();
         else
-          stack_dup(); 
+          stack_dup();
         break;
 
       case KEY_BSP:
@@ -821,7 +821,7 @@ void program_init() {
   num_from_string(&num_200_pi, "63.66197723675813430755350534900574");
   // 1/100 (for %)
   num_from_string(&num_1_100,  "0.01");
-  // 
+  //
   //num_from_string(&num_, "");
 
 
@@ -839,7 +839,7 @@ void program_init() {
 
 void program_main() {
   int key = 0;
-  
+
   // Initialization
   program_init();
   redraw_lcd();
@@ -920,5 +920,7 @@ void program_main() {
 }
 
 
-
-
+void _exit(int value)
+{
+    while (1) ;
+}
