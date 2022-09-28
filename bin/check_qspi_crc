@@ -7,7 +7,7 @@ q=build/${pgm}_qspi.bin
 
 
 filesize() {
-	stat -Lc%s "$1"
+	cat "$1" | wc -c
 }
 
 
