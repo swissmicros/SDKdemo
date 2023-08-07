@@ -31,7 +31,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-  The software and related material is released as “NOMAS”  (NOt MAnufacturer Supported). 
+  The software and related material is released as “NOMAS”  (NOt MAnufacturer Supported).
 
   1. Info is released to assist customers using, exploring and extending the product
   2. Do NOT contact the manufacturer with questions, seeking support, etc. regarding
@@ -44,6 +44,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __SYS_DMCP_H__
 
 #include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 typedef unsigned int uint;
 
@@ -134,8 +138,8 @@ typedef struct {
   uint8_t char_cnt;
   uint8_t scale_x;
   uint8_t scale_y;
-  uint8_t const * data;
-  uint16_t const * offs;
+  const uint8_t  *data;
+  const uint16_t *offs;
 } line_font_t;
 
 
@@ -144,21 +148,22 @@ typedef struct {
 
 // Font display state
 typedef struct {
-  line_font_t const * f; // Current font
-  int16_t x, y;      // Current x,y position
-  int16_t ln_offs;   // Line offset (when displaying by line numbers)
-  int16_t y_top_grd; // Don't overwrite anything above this line
-  int8_t  ya;     // Lines to fill above the font
-  int8_t  yb;     // Lines to fill below the font
-  int8_t  xspc;   // Space between chars
-  int8_t  xoffs;  // X offset for first char on line
+    const line_font_t *f;       // Current font
+    int16_t            x, y;    // Current x,y position
+    int16_t            ln_offs; // Line offset (when displaying by line numbers)
+    int16_t            y_top_grd; // Don't overwrite anything above this line
+    int8_t             ya;        // Lines to fill above the font
+    int8_t             yb;        // Lines to fill below the font
+    int8_t             xspc;      // Space between chars
+    int8_t             xoffs;     // X offset for first char on line
 
-  uint8_t fixed;  // Draw in fixed width
-  uint8_t inv;    // Draw inverted
-  uint8_t bgfill; // Fill background while drawing
-  uint8_t lnfill; // Fill whole lines before writing line
-  uint8_t newln;  // New line after writing line
-  const uint8_t *post_offs; // X-advance character width minus this value (if not-null)
+    uint8_t            fixed;  // Draw in fixed width
+    uint8_t            inv;    // Draw inverted
+    uint8_t            bgfill; // Fill background while drawing
+    uint8_t            lnfill; // Fill whole lines before writing line
+    uint8_t            newln;  // New line after writing line
+    const uint8_t
+        *post_offs; // X-advance character width minus this value (if not-null)
 } disp_stat_t;
 
 void lcd_writeNl(disp_stat_t * ds);
@@ -192,7 +197,7 @@ int lcd_textToWidthR(disp_stat_t * ds, const char* text, int expected_width, int
 void lcd_writeTextWidth(disp_stat_t * ds, const char* text);
 
 // Get text which fits in expected width *without breaking words*
-// - word could be broken in the middle only when is placed single long word on line 
+// - word could be broken in the middle only when is placed single long word on line
 int lcd_textForWidth(disp_stat_t * ds, const char* text, int expected_width, int * plen);
 
 
@@ -462,7 +467,7 @@ int read_key(int *k1, int *k2);
 
 
 /////////////////////////////////
-// Low level diagnostics 
+// Low level diagnostics
 /////////////////////////////////
 
 void suspended_bg_key_read();
@@ -515,7 +520,7 @@ int qspi_user_size();
 // ----------------------------------
 
 
-// Printer 
+// Printer
 #define PRINT_GRA_LN  1
 #define PRINT_TXT_LN  0
 
@@ -653,7 +658,7 @@ int handle_menu(const smenu_t * menu_id, int action, int cur_line);
 // === Menu formatting support
 const char * rb_str(int val);
 const char * sel_str(int val);
-char * opt_str(char * s, char const *txt, int val);
+char        *opt_str(char *s, const char *txt, int val);
 char * date_str(char * s, const char * txt);
 char * time_str(char * s, const char * txt);
 
@@ -815,7 +820,7 @@ int run_menu_item_sys(uint8_t line_id);
 #define VAL_ST(x)       VAL(x,calc_state)
 #define CLR_ST(x)       CLR(x,calc_state)
 #define SET_ST(x)       SET(x,calc_state)
-#define SETMSK_ST(x,m)  SETMSK(x,m,calc_state) 
+#define SETMSK_ST(x,m)  SETMSK(x,m,calc_state)
 #define SETBY_ST(c,x)   SETBY(c,x,calc_state)
 
 
@@ -901,8 +906,17 @@ int is_menu_auto_off();
 int sys_auto_off_cnt();
 
 // Time/date
-void print_dmy_date(char * s, int const sz, dt_t *dt, const char * append, int shortmon, char sep_arg);
-void print_clk24_time(char * t, int const sz, tm_t *tm, int disp_sec, int disp_dow);
+void         print_dmy_date(char       *s,
+                            const int   sz,
+                            dt_t       *dt,
+                            const char *append,
+                            int         shortmon,
+                            char        sep_arg);
+void         print_clk24_time(char     *t,
+                              const int sz,
+                              tm_t     *tm,
+                              int       disp_sec,
+                              int       disp_dow);
 
 
 // Check and create dir
@@ -933,7 +947,7 @@ int sys_timer_active(int timer_ix);
 int sys_timer_timeout(int timer_ix);
 
 // Millisecond delay
-void sys_delay(uint32_t ms_delay); 
+void sys_delay(uint32_t ms_delay);
 
 // Current systick count
 uint32_t sys_tick_count();
@@ -1010,5 +1024,9 @@ int update_bmp_file_header(FIL* fp, int width, int height, uint32_t bg_color);
 
 
 #include "lft_ifc.h"
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif
