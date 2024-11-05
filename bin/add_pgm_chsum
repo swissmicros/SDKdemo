@@ -48,7 +48,7 @@ dumppgm() {
 
 # -- MAIN ------------------
 
-checkutils sha1sum sed tac dd printf find type
+checkutils sha1sum sed tac dd printf find type wc
 
 if [ ! -f "$bin" ]; then
 	echo "ERROR: Cannot find program binary '$bin'"
@@ -60,7 +60,7 @@ if [ -z "$pgm" ]; then
 	exit 1
 fi
 
-pgmsz=`find "$bin" -printf "%s"`
+pgmsz=`cat $bin | wc -c`
 hexsz=`printf "%08x" $pgmsz`
 
 sha=`dumppgm | sha1sum | tr -d ' -'`
@@ -71,5 +71,3 @@ echo "SHA1: $sha"
 	dumppgm
 	toint8 $sha
 ) > $pgm
-
-
