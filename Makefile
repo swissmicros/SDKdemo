@@ -90,7 +90,7 @@ CPUFLAGS += -mthumb -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16
 # compile gcc flags
 ASFLAGS = $(CPUFLAGS) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 CFLAGS  = $(CPUFLAGS) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-CFLAGS += -Wno-misleading-indentation
+CFLAGS += -Wno-misleading-indentation -Wno-stringop-truncation
 DBGFLAGS = -g 
 
 ifeq ($(DEBUG), 1)
@@ -111,8 +111,9 @@ CFLAGS += -MD -MP -MF .dep/$(@F).d
 # link script
 LDSCRIPT = stm32_program.ld
 LIBDIR =
-LDFLAGS = $(CPUFLAGS) -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections \
-  -Wl,--wrap=_malloc_r
+LDFLAGS += $(CPUFLAGS) -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref
+LDFLAGS += -specs=nano.specs
+LDFLAGS += -Wl,--gc-sections -Wl,--wrap=_malloc_r
 
 
 # default action: build all

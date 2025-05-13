@@ -2,7 +2,7 @@
 
 BSD 3-Clause License
 
-Copyright (c) 2015-2024, SwissMicros
+Copyright (c) 2015-2025, SwissMicros
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -76,6 +76,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // ==================================================
 void stack_dup();
 void stack_pop();
+void stack_clear();
 void clear_regs();
 
 
@@ -479,7 +480,7 @@ void add_edit_key(int key) {
       break;
 
     default: // Numbers
-      if ( !dot && ((len == 1 && ed[0] == '0') || (ed[len-1] == '0' && !isdigit(ed[len-2]))) )
+      if ( !dot && ((len == 1 && ed[0] == '0') || (ed[len-1] == '0' && !isdigit((int)ed[len-2]))) )
         ed[--len] = 0; // Remove redundant 0
       ed_cat(key_to_char[key], len);
       break;
@@ -494,6 +495,13 @@ void add_edit_key(int key) {
 // ==================================================
 
 #define FNSH 0x100
+
+
+void stack_clear() {
+  for(int a=0; a<STACK_SIZE; a++)
+    stack[a] = num_zero;
+}
+
 
 void stack_dup() {
   memmove(stack+1, stack, sizeof(num_t)*(STACK_SIZE-1));
@@ -550,7 +558,7 @@ int run_fn(int key) {
 
   switch (fnr) {
 
-    case KEY_BSP   | FNSH:  clear_regs(); break;
+    case KEY_BSP   | FNSH:  stack_clear(); break; //clear_regs();
 
     case KEY_BSP:
     case KEY_RDN:           stack_pop(); break;
@@ -831,6 +839,7 @@ void program_init() {
 
   // Zero numbers
   clear_regs();
+  stack_clear();
 }
 
 
