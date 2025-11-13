@@ -356,7 +356,7 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.28"
+#define PLATFORM_VERSION "3.29"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
