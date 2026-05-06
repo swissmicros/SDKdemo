@@ -356,7 +356,7 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.29"
+#define PLATFORM_VERSION "3.31"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
@@ -794,6 +794,7 @@ int run_menu_item_sys(uint8_t line_id);
 #define KEY_SCREENSHOT 44
 #define KEY_SH_UP      45
 #define KEY_SH_DOWN    46
+#define KEY_SETUP_MENU 47
 
 #define KEY_DOUBLE_RELEASE 99
 
