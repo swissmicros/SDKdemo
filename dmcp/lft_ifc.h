@@ -244,3 +244,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define qrcode_initText (*(typeof(qrcode_initText)*)(LIBRARY_FN_BASE+792))
 #define qrcode_initBytes (*(typeof(qrcode_initBytes)*)(LIBRARY_FN_BASE+796))
 #define qrcode_getModule (*(typeof(qrcode_getModule)*)(LIBRARY_FN_BASE+800))
+#define usb_serial_read_line (*(typeof(usb_serial_read_line)*)(LIBRARY_FN_BASE+804))
+#define usb_serial_write (*(typeof(usb_serial_write)*)(LIBRARY_FN_BASE+808))
+#define usb_serial_ioctl (*(typeof(usb_serial_ioctl)*)(LIBRARY_FN_BASE+812))
+#define usb_serial_puts (*(typeof(usb_serial_puts)*)(LIBRARY_FN_BASE+816))
