@@ -228,6 +228,9 @@ int lcd_toggleFontT(int nr);
 #define DISP_PROD_DIAG          23
 #define DISP_POWER_CHECK        24
 #define DISP_FLASH_CONNECT_USB  26
+//#define DISP_FAILBOOT           27
+#define DISP_SERMON_CONNECT_USB 28
+#define DISP_SERMON_ACTIVE      29
 // ----
 
 
@@ -356,11 +359,11 @@ typedef struct {
 
 // ----------------------------------
 
-#define PLATFORM_VERSION "3.31"
+#define PLATFORM_VERSION "3.32"
 
 // System interface version
 #define PLATFORM_IFC_CNR   3
-#define PLATFORM_IFC_VER  17
+#define PLATFORM_IFC_VER  18
 
 // STATIC_ASSERT ...
 #define ASSERT_CONCAT_(a, b) a##b
@@ -409,6 +412,7 @@ void no_region();
 
 // ==== RESET values
 #define NO_SPLASH_MAGIC         0xEACE7362
+#define PROD_DIAG3_MAGIC        0xEBDE7373
 #define ALLOC_FAIL_MAGIC        0x363EACE7
 #define CLEAN_RESET_MAGIC       0x3EACE736
 #define RUN_DMCP_MAGIC          0x3CE7EA37
@@ -426,10 +430,58 @@ void set_reset_state_file(const char * str);
 // ==== USB functions
 int switch_usb_powered_freq();
 int usb_powered();
-void usb_acm_on();
 int usb_is_on();
 void usb_turn_off();
+
+// -- Old USB serial interface
+int usb_acm_on();
 void acm_puts(const char *str);
+
+// -- USB serial interface
+
+#define USIN_CHAN_CNT              4     // Number of input channels allocated
+#define USIN_CHAN_SIZE           256     // Single channel buffer (FIFO) size
+#define USIN_MAX_READLINES        16     // Max. number of lines supported in input buffer
+
+#define US_OVERFLOW_CHAR       '\x0f'    // Character at end of the line when buffer overflow occurs
+#define US_LINEEND_CHAR          '\n'    // End of line character
+#define US_CHAN0_CHAR          '\x10'    // Channel ID for channel 0, other channel IDs sequentially follow
+#define US_MAX_CHANS              11     // Theoretical limit of serial console protocol
+
+// Value to read data
+#define SER_IOCTL_READ     ((int)(1<<31))
+
+// Return value indicating unknown operation
+#define SER_IOCTL_INVALID  ((int)(1<<31))
+
+// USB serial ioctl ops
+#define SERIO_IS_ENABLED         0x01    // (RW) Serial console on/off
+#define SERIO_IS_ACTIVE          0x02    // (R)  Enabled and USB connected -> active
+#define SERIO_IS_CONNECTED       0x03    // (R)  Client connected, 
+
+#define SERIO_LINE_READY         0x08    // (R) val=channel, Line is ready in input channel
+#define SERIO_LINE_LENGTH        0x09    // (R) val=channel, Line length if line is ready, 0 otherwise
+
+#define SERIO_SEND_PRINTF        0x10    // (RW) Send printf output to serial console
+#define SERIO_SEND_LCD           0x11    // (RW) Send LCD contents over serial console
+#define SERIO_SEND_KEYS          0x12    // (RW) Send key scan changes to serial console
+#define SERIO_SEND_IR            0x13    // (RW) Send IR traffic over serial console
+
+
+// USB serial input channels
+#define US_ICHAN_KEY              0
+#define US_ICHAN_SYS              1
+// USB serial output channels
+#define US_OCHAN_SYS              0
+#define US_OCHAN_PRINTF           1
+
+
+void usb_serial_write(uint8_t chan_nr, const char* buf, int len);
+void usb_serial_puts(uint8_t chan_nr, const char* str);
+int usb_serial_read_line(uint8_t chan_nr, uint8_t *buf, int buflen, uint8_t *is_overflow);
+int usb_serial_ioctl(int op, int val);
+
+//----------------------------------
 
 // Aux buf
 #define AUX_BUF_SIZE (5*512)
@@ -460,6 +512,7 @@ typedef struct {
 // Keyboard
 int read_key(int *k1, int *k2);
 int sys_last_scan(int *k1, int *k2);
+
 
 /////////////////////////////////
 // Low level diagnostics 
@@ -563,6 +616,7 @@ extern const smenu_t   MID_PROD_DIAG2; // Production diagnostic screen - selftes
 extern const smenu_t         MID_DMCP; // Top level system menu
 extern const smenu_t   MID_BASE_SETUP; // System setup menu
 extern const smenu_t     MID_BAD_KMAP; // Bad keymap menu
+extern const smenu_t   MID_ADMCON_DIS; // Disable Adm-con (DMCP console) menu
 
 
 // --------------------------------
@@ -613,6 +667,15 @@ extern const smenu_t     MID_BAD_KMAP; // Bad keymap menu
 
 #define MI_KMAP_PGM_RUN    224
 #define MI_KMAP_DMCP       225
+
+#define MI_KBD_HW_TEST     226
+#define MI_ADMCON          227
+
+#define MI_SERCON_ONOFF    229
+#define MI_SERCON_PRINTF   230
+
+#define MI_ADMCON_DIS      233
+#define MI_USB_MENU        234
 
 // --------------------------------
 
